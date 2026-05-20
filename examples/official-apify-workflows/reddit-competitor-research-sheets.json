@@ -1,0 +1,72 @@
+{
+  "name": "Reddit competitor research for Sheets with Apify",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f2e5a20f-cda8-4f15-9af4-e2c1f36f9e11",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "Actors",
+        "operation": "Run actor and get dataset",
+        "actorId": "Newbs/reddit-comment-scraper",
+        "customBody": "{\n  \"postUrls\": [\n    \"https://www.reddit.com/r/startups/comments/1c4n8ew/what_tools_do_you_find_too_expensive/\"\n  ],\n  \"maxComments\": 300,\n  \"includeReplies\": true,\n  \"sortBy\": \"top\",\n  \"maxConcurrency\": 2,\n  \"proxy\": {\n    \"useApifyProxy\": true,\n    \"apifyProxyGroups\": [\"RESIDENTIAL\"],\n    \"apifyProxyCountry\": \"US\"\n  }\n}",
+        "timeout": 1800,
+        "memory": 1024,
+        "build": "latest",
+        "authentication": "apifyApi"
+      },
+      "id": "75541d60-fd30-4d7f-99bf-ffbecefc4c93",
+      "name": "Run Reddit Comment Scraper",
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const competitors = ['competitor one', 'competitor two'];\nconst intentTerms = ['alternative', 'replace', 'switch', 'recommend', 'better than', 'too expensive', 'pricing'];\n\nreturn $input.all().map((item) => {\n  const row = item.json;\n  const text = String(row.commentText || '');\n  const lower = text.toLowerCase();\n  const mentionedCompetitors = competitors.filter((name) => lower.includes(name.toLowerCase()));\n  const matchedIntentTerms = intentTerms.filter((term) => lower.includes(term));\n\n  return {\n    json: {\n      collectedAt: new Date().toISOString(),\n      subreddit: row.subreddit,\n      postTitle: row.postTitle,\n      postUrl: row.postUrl,\n      commentAuthor: row.commentAuthor,\n      commentTimestamp: row.commentTimestamp,\n      commentDepth: row.commentDepth,\n      mentionedCompetitors: mentionedCompetitors.join(', '),\n      matchedIntentTerms: matchedIntentTerms.join(', '),\n      researchPriority: mentionedCompetitors.length || matchedIntentTerms.length ? 'review' : 'background',\n      commentText: text,\n    },\n  };\n});"
+      },
+      "id": "af6dfe2f-680c-4cd0-965a-710c92100f4c",
+      "name": "Prepare Sheet Rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Run Reddit Comment Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Reddit Comment Scraper": {
+      "main": [
+        [
+          {
+            "node": "Prepare Sheet Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "active": false,
+  "tags": ["reddit", "apify", "google-sheets", "competitive-research"]
+}

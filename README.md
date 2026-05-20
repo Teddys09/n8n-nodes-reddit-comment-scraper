@@ -10,6 +10,8 @@ Run the private **Reddit Comment Scraper** Apify Actor from n8n and return one n
 
 This package is an optional shortcut for self-hosted n8n users. It is not the recommended n8n Cloud path.
 
+![Reddit Comment Scraper n8n workflow](https://raw.githubusercontent.com/Teddys09/n8n-nodes-reddit-comment-scraper/main/docs/assets/reddit-n8n-apify-workflow.svg)
+
 n8n declined verified listing for this package because it wraps an Apify Actor and n8n already has an Apify node. For n8n Cloud and verified-node workflows, use the official Apify node package instead:
 
 ```text
@@ -137,8 +139,12 @@ Recommended workflows that use the official Apify node are included in [`example
 | `reddit-pain-point-keywords.json` | Find comments with pain-point language for product research. |
 | `reddit-thread-metrics.json` | Aggregate reply ratio, max depth, and author counts by Reddit post. |
 | `reddit-ai-research-brief.json` | Build a compact AI-ready research brief from comments. |
+| `reddit-brand-monitor-slack.json` | Filter brand/competitor mentions and prepare Slack-ready alert text. |
+| `reddit-competitor-research-sheets.json` | Prepare Google Sheets-ready competitor research rows. |
 
 These templates use `@apify/n8n-nodes-apify` and are the best option for n8n Cloud or verified-node workflows.
+
+Promotion copy and posting drafts are included in [`docs/N8N_DISTRIBUTION_KIT.md`](docs/N8N_DISTRIBUTION_KIT.md).
 
 Self-hosted shortcut examples for this package are included in [`examples/workflows`](examples/workflows):
 

@@ -16,6 +16,8 @@ They do not require the rejected dedicated wrapper node. This is the primary n8n
 | `reddit-pain-point-keywords.json` | Scores comments with basic pain-point keywords before sending them to a CRM, Slack, Notion, or an AI node. |
 | `reddit-thread-metrics.json` | Aggregates comment counts, reply ratio, max depth, and unique author counts per Reddit post. |
 | `reddit-ai-research-brief.json` | Builds a compact AI-ready brief from comments for an AI Agent or LLM node. |
+| `reddit-brand-monitor-slack.json` | Filters comments for brand/competitor keywords and prepares Slack-ready alert text. |
+| `reddit-competitor-research-sheets.json` | Prepares Google Sheets-ready rows for competitor and buying-intent research. |
 
 ## Before Running
 

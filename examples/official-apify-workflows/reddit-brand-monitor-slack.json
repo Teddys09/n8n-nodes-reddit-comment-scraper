@@ -1,0 +1,94 @@
+{
+  "name": "Reddit brand monitor for Slack with Apify",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f2e5a20f-cda8-4f15-9af4-e2c1f36f9e11",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "Actors",
+        "operation": "Run actor and get dataset",
+        "actorId": "Newbs/reddit-comment-scraper",
+        "customBody": "{\n  \"postUrls\": [\n    \"https://www.reddit.com/r/startups/comments/1c4n8ew/what_tools_do_you_find_too_expensive/\"\n  ],\n  \"maxComments\": 250,\n  \"includeReplies\": true,\n  \"sortBy\": \"new\",\n  \"maxConcurrency\": 2,\n  \"proxy\": {\n    \"useApifyProxy\": true,\n    \"apifyProxyGroups\": [\"RESIDENTIAL\"],\n    \"apifyProxyCountry\": \"US\"\n  }\n}",
+        "timeout": 1800,
+        "memory": 1024,
+        "build": "latest",
+        "authentication": "apifyApi"
+      },
+      "id": "75541d60-fd30-4d7f-99bf-ffbecefc4c93",
+      "name": "Run Reddit Comment Scraper",
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const keywords = ['your brand', 'competitor', 'alternative', 'recommend'];\n\nreturn $input.all()\n  .map((item) => {\n    const row = item.json;\n    const text = String(row.commentText || '');\n    const lower = text.toLowerCase();\n    const matchedKeywords = keywords.filter((keyword) => lower.includes(keyword.toLowerCase()));\n\n    return {\n      json: {\n        postUrl: row.postUrl,\n        subreddit: row.subreddit,\n        postTitle: row.postTitle,\n        commentAuthor: row.commentAuthor,\n        commentText: text,\n        commentTimestamp: row.commentTimestamp,\n        matchedKeywords,\n      },\n    };\n  })\n  .filter((item) => item.json.matchedKeywords.length > 0);"
+      },
+      "id": "0e60f3d4-9c6c-47d7-8f97-98d98de246e2",
+      "name": "Filter Brand Mentions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return $input.all().map((item) => {\n  const row = item.json;\n  const preview = String(row.commentText || '').replace(/\\s+/g, ' ').slice(0, 600);\n  const matchedKeywords = Array.isArray(row.matchedKeywords) ? row.matchedKeywords : [];\n\n  return {\n    json: {\n      slackText: [\n        `New Reddit mention in r/${row.subreddit || 'unknown'}`,\n        `Keywords: ${matchedKeywords.join(', ') || 'none configured'}`,\n        `Post: ${row.postTitle || row.postUrl}`,\n        `Author: ${row.commentAuthor || 'unknown'}`,\n        `Comment: ${preview}`,\n        `Source: ${row.postUrl}`,\n      ].join('\\n'),\n      ...row,\n      matchedKeywords,\n    },\n  };\n});"
+      },
+      "id": "549a6c4b-cb98-42d0-9d54-1da3675ff473",
+      "name": "Format Slack Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1020, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Run Reddit Comment Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Reddit Comment Scraper": {
+      "main": [
+        [
+          {
+            "node": "Filter Brand Mentions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Brand Mentions": {
+      "main": [
+        [
+          {
+            "node": "Format Slack Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "active": false,
+  "tags": ["reddit", "apify", "slack", "monitoring"]
+}

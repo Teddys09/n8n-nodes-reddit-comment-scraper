@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Reddit Comment Scraper n8n workflow with Apify</title>
+  <desc id="desc">A workflow diagram showing n8n triggering the official Apify node, running the Reddit Comment Scraper Actor, and sending results to Sheets, Slack, Notion, Airtable, HubSpot, or AI nodes.</desc>
+  <rect width="1200" height="630" fill="#f7f8fb"/>
+  <rect x="48" y="44" width="1104" height="542" rx="26" fill="#ffffff" stroke="#d9dee8" stroke-width="2"/>
+  <text x="92" y="112" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#182033">Reddit research workflows for n8n</text>
+  <text x="92" y="154" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#566176">Use the official Apify node to run Reddit Comment Scraper and route clean comment rows into your automation stack.</text>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="94" y="230" width="198" height="118" rx="18" fill="#fff4ed" stroke="#ff6b2c" stroke-width="2"/>
+    <text x="126" y="278" font-size="23" font-weight="700" fill="#292f3d">n8n trigger</text>
+    <text x="126" y="309" font-size="16" fill="#6b7280">Manual, schedule,</text>
+    <text x="126" y="331" font-size="16" fill="#6b7280">webhook, or chat</text>
+
+    <rect x="382" y="230" width="214" height="118" rx="18" fill="#eef6ff" stroke="#356dff" stroke-width="2"/>
+    <text x="414" y="278" font-size="23" font-weight="700" fill="#292f3d">Apify node</text>
+    <text x="414" y="309" font-size="16" fill="#6b7280">Run actor and</text>
+    <text x="414" y="331" font-size="16" fill="#6b7280">get dataset</text>
+
+    <rect x="686" y="230" width="226" height="118" rx="18" fill="#f1fbf5" stroke="#21a67a" stroke-width="2"/>
+    <text x="718" y="278" font-size="23" font-weight="700" fill="#292f3d">Reddit Actor</text>
+    <text x="718" y="309" font-size="16" fill="#6b7280">Comments, replies,</text>
+    <text x="718" y="331" font-size="16" fill="#6b7280">thread context</text>
+
+    <rect x="1000" y="198" width="108" height="54" rx="14" fill="#f8fafc" stroke="#ccd4df"/>
+    <text x="1028" y="232" font-size="16" font-weight="700" fill="#374151">Sheets</text>
+    <rect x="1000" y="266" width="108" height="54" rx="14" fill="#f8fafc" stroke="#ccd4df"/>
+    <text x="1032" y="300" font-size="16" font-weight="700" fill="#374151">Slack</text>
+    <rect x="1000" y="334" width="108" height="54" rx="14" fill="#f8fafc" stroke="#ccd4df"/>
+    <text x="1024" y="368" font-size="16" font-weight="700" fill="#374151">AI brief</text>
+
+    <path d="M304 289H368" stroke="#9aa4b2" stroke-width="4" stroke-linecap="round"/>
+    <path d="M356 277l16 12-16 12" fill="none" stroke="#9aa4b2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M608 289H672" stroke="#9aa4b2" stroke-width="4" stroke-linecap="round"/>
+    <path d="M660 277l16 12-16 12" fill="none" stroke="#9aa4b2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M924 289H982" stroke="#9aa4b2" stroke-width="4" stroke-linecap="round"/>
+    <path d="M970 277l16 12-16 12" fill="none" stroke="#9aa4b2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <rect x="92" y="430" width="1016" height="74" rx="18" fill="#111827"/>
+  <text x="126" y="474" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" fill="#ffffff">Included templates:</text>
+  <text x="324" y="474" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#d1d5db">clean export, pain points, Slack alerts, competitor research, thread metrics, AI research brief</text>
+</svg>

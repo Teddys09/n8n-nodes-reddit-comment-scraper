@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-reddit-comment-scraper",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "n8n community node for running the Reddit Comment Scraper Apify Actor and returning comment datasets.",
   "license": "MIT",
   "homepage": "https://apify.com/Newbs/reddit-comment-scraper",

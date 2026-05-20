@@ -6,6 +6,18 @@
 
 Run the private **Reddit Comment Scraper** Apify Actor from n8n and return one n8n item per Reddit comment.
 
+## Status
+
+This package is an optional shortcut for self-hosted n8n users. It is not the recommended n8n Cloud path.
+
+n8n declined verified listing for this package because it wraps an Apify Actor and n8n already has an Apify node. For n8n Cloud and verified-node workflows, use the official Apify node package instead:
+
+```text
+@apify/n8n-nodes-apify
+```
+
+The recommended workflow is: official Apify node -> `Run actor and get dataset` -> Actor ID `Newbs/reddit-comment-scraper`.
+
 This package is only a public n8n wrapper. It does not contain the Actor scraping implementation, browser automation logic, proxy handling, or any Apify secrets. Users bring their own Apify API token, and the paid Actor runs on Apify.
 
 ## Links
@@ -49,13 +61,13 @@ Restart n8n after installing the package.
 
 ### n8n Cloud
 
-If your n8n Cloud workspace allows verified/community node installation, install the package by name:
+Use the official Apify node instead of this package:
 
 ```text
-n8n-nodes-reddit-comment-scraper
+@apify/n8n-nodes-apify
 ```
 
-If the package is not visible in search yet, use the exact package name. npm search and n8n indexing can lag after a new release.
+Then run Actor ID `Newbs/reddit-comment-scraper` with the **Run actor and get dataset** operation.
 
 ## Credentials
 
@@ -117,7 +129,18 @@ The node returns one n8n item per Reddit comment. Typical fields include:
 
 ## Workflow Starters
 
-Importable examples are included in [`examples/workflows`](examples/workflows):
+Recommended workflows that use the official Apify node are included in [`examples/official-apify-workflows`](examples/official-apify-workflows):
+
+| Workflow | Purpose |
+| --- | --- |
+| `reddit-comments-clean-export.json` | Normalize comments for Sheets, CSV, Airtable, or databases. |
+| `reddit-pain-point-keywords.json` | Find comments with pain-point language for product research. |
+| `reddit-thread-metrics.json` | Aggregate reply ratio, max depth, and author counts by Reddit post. |
+| `reddit-ai-research-brief.json` | Build a compact AI-ready research brief from comments. |
+
+These templates use `@apify/n8n-nodes-apify` and are the best option for n8n Cloud or verified-node workflows.
+
+Self-hosted shortcut examples for this package are included in [`examples/workflows`](examples/workflows):
 
 | Workflow | Purpose |
 | --- | --- |
@@ -125,7 +148,7 @@ Importable examples are included in [`examples/workflows`](examples/workflows):
 | `reddit-pain-point-keywords.json` | Find comments with pain-point language for product research. |
 | `reddit-thread-metrics.json` | Aggregate reply ratio, max depth, and author counts by Reddit post. |
 
-To use them:
+To use the self-hosted shortcut examples:
 
 1. Install this community node.
 2. Import one workflow JSON file into n8n.

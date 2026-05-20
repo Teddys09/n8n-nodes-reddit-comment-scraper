@@ -1,0 +1,72 @@
+{
+  "name": "Reddit comments clean export with Apify",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f2e5a20f-cda8-4f15-9af4-e2c1f36f9e11",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "Actors",
+        "operation": "Run actor and get dataset",
+        "actorId": "Newbs/reddit-comment-scraper",
+        "customBody": "{\n  \"postUrls\": [\n    \"https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/\"\n  ],\n  \"maxComments\": 100,\n  \"includeReplies\": true,\n  \"sortBy\": \"top\",\n  \"maxConcurrency\": 2,\n  \"proxy\": {\n    \"useApifyProxy\": true,\n    \"apifyProxyGroups\": [\"RESIDENTIAL\"],\n    \"apifyProxyCountry\": \"US\"\n  }\n}",
+        "timeout": 1800,
+        "memory": 1024,
+        "build": "latest",
+        "authentication": "apifyApi"
+      },
+      "id": "75541d60-fd30-4d7f-99bf-ffbecefc4c93",
+      "name": "Run Reddit Comment Scraper",
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return $input.all().map((item) => {\n  const row = item.json;\n  return {\n    json: {\n      postUrl: row.postUrl,\n      subreddit: row.subreddit,\n      postTitle: row.postTitle,\n      commentId: row.commentId,\n      commentAuthor: row.commentAuthor,\n      commentText: row.commentText,\n      commentTimestamp: row.commentTimestamp,\n      commentDepth: row.commentDepth,\n      isTopLevel: row.isTopLevel,\n      replyCount: row.replyCount,\n      commentPath: row.commentPath,\n      parentPath: row.parentPath,\n      scrapedAt: row.scrapedAt,\n    },\n  };\n});"
+      },
+      "id": "72a0d814-972c-405e-aa91-ef991c6a5fc0",
+      "name": "Clean Export Rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Run Reddit Comment Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Reddit Comment Scraper": {
+      "main": [
+        [
+          {
+            "node": "Clean Export Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "active": false,
+  "tags": ["reddit", "apify", "export"]
+}

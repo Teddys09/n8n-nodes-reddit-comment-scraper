@@ -1,0 +1,72 @@
+{
+  "name": "Reddit thread metrics with Apify",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f2e5a20f-cda8-4f15-9af4-e2c1f36f9e11",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "Actors",
+        "operation": "Run actor and get dataset",
+        "actorId": "Newbs/reddit-comment-scraper",
+        "customBody": "{\n  \"postUrls\": [\n    \"https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/\"\n  ],\n  \"maxComments\": 500,\n  \"includeReplies\": true,\n  \"sortBy\": \"top\",\n  \"maxConcurrency\": 2,\n  \"proxy\": {\n    \"useApifyProxy\": true,\n    \"apifyProxyGroups\": [\"RESIDENTIAL\"],\n    \"apifyProxyCountry\": \"US\"\n  }\n}",
+        "timeout": 1800,
+        "memory": 1024,
+        "build": "latest",
+        "authentication": "apifyApi"
+      },
+      "id": "75541d60-fd30-4d7f-99bf-ffbecefc4c93",
+      "name": "Run Reddit Comment Scraper",
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const comments = $input.all().map((item) => item.json);\nconst grouped = new Map();\n\nfor (const comment of comments) {\n  const key = String(comment.postUrl || 'unknown');\n  const current = grouped.get(key) || {\n    postUrl: comment.postUrl,\n    subreddit: comment.subreddit,\n    postTitle: comment.postTitle,\n    commentCount: 0,\n    topLevelCount: 0,\n    replyCount: 0,\n    maxDepth: 0,\n    uniqueAuthors: new Set(),\n  };\n\n  current.commentCount += 1;\n  if (comment.isTopLevel) current.topLevelCount += 1;\n  if (!comment.isTopLevel) current.replyCount += 1;\n  current.maxDepth = Math.max(current.maxDepth, Number(comment.commentDepth || 0));\n  if (comment.commentAuthor) current.uniqueAuthors.add(comment.commentAuthor);\n  grouped.set(key, current);\n}\n\nreturn [...grouped.values()].map((metrics) => ({\n  json: {\n    postUrl: metrics.postUrl,\n    subreddit: metrics.subreddit,\n    postTitle: metrics.postTitle,\n    commentCount: metrics.commentCount,\n    topLevelCount: metrics.topLevelCount,\n    replyCount: metrics.replyCount,\n    replyRatio: metrics.commentCount ? metrics.replyCount / metrics.commentCount : 0,\n    maxDepth: metrics.maxDepth,\n    uniqueAuthorCount: metrics.uniqueAuthors.size,\n  },\n}));"
+      },
+      "id": "2bcc1ac8-b5e4-4541-a38e-3bf11f0c2454",
+      "name": "Calculate Thread Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Run Reddit Comment Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Reddit Comment Scraper": {
+      "main": [
+        [
+          {
+            "node": "Calculate Thread Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "active": false,
+  "tags": ["reddit", "apify", "analytics"]
+}

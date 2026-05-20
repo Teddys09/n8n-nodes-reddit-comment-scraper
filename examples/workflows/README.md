@@ -1,9 +1,15 @@
 # n8n Workflow Starters
 
-These workflows are designed to be imported into n8n after installing:
+These workflows are for the optional self-hosted shortcut package:
 
 ```text
 n8n-nodes-reddit-comment-scraper
+```
+
+For n8n Cloud or verified-node workflows, use the official Apify-node templates in:
+
+```text
+examples/official-apify-workflows
 ```
 
 ## Files

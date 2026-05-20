@@ -1,0 +1,72 @@
+{
+  "name": "Reddit AI research brief with Apify",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f2e5a20f-cda8-4f15-9af4-e2c1f36f9e11",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "Actors",
+        "operation": "Run actor and get dataset",
+        "actorId": "Newbs/reddit-comment-scraper",
+        "customBody": "{\n  \"postUrls\": [\n    \"https://www.reddit.com/r/startups/comments/1c4n8ew/what_tools_do_you_find_too_expensive/\"\n  ],\n  \"maxComments\": 150,\n  \"includeReplies\": true,\n  \"sortBy\": \"top\",\n  \"maxConcurrency\": 2,\n  \"proxy\": {\n    \"useApifyProxy\": true,\n    \"apifyProxyGroups\": [\"RESIDENTIAL\"],\n    \"apifyProxyCountry\": \"US\"\n  }\n}",
+        "timeout": 1800,
+        "memory": 1024,
+        "build": "latest",
+        "authentication": "apifyApi"
+      },
+      "id": "75541d60-fd30-4d7f-99bf-ffbecefc4c93",
+      "name": "Run Reddit Comment Scraper",
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const comments = $input.all().map((item) => item.json);\nconst painTerms = [\n  'problem', 'issue', 'bug', 'broken', 'wish', 'need', 'missing',\n  'frustrating', 'expensive', 'slow', 'hate', 'annoying', 'hard to',\n  'confusing', 'pain', 'manual', 'waste of time', 'does not', \"doesn't\",\n];\n\nconst byPost = new Map();\nfor (const row of comments) {\n  const key = String(row.postUrl || 'unknown');\n  const current = byPost.get(key) || {\n    postUrl: row.postUrl,\n    subreddit: row.subreddit,\n    postTitle: row.postTitle,\n    totalComments: 0,\n    topLevelComments: 0,\n    replies: 0,\n    maxDepth: 0,\n    painPointComments: [],\n    sampleComments: [],\n  };\n\n  const text = String(row.commentText || '').trim();\n  const lower = text.toLowerCase();\n  const matchedTerms = painTerms.filter((term) => lower.includes(term));\n\n  current.totalComments += 1;\n  if (row.isTopLevel) current.topLevelComments += 1;\n  if (!row.isTopLevel) current.replies += 1;\n  current.maxDepth = Math.max(current.maxDepth, Number(row.commentDepth || 0));\n\n  if (text && current.sampleComments.length < 12) {\n    current.sampleComments.push({\n      author: row.commentAuthor,\n      depth: row.commentDepth,\n      text: text.slice(0, 600),\n    });\n  }\n\n  if (matchedTerms.length > 0 && current.painPointComments.length < 20) {\n    current.painPointComments.push({\n      author: row.commentAuthor,\n      matchedTerms,\n      text: text.slice(0, 800),\n    });\n  }\n\n  byPost.set(key, current);\n}\n\nreturn [...byPost.values()].map((post) => ({\n  json: {\n    ...post,\n    aiPrompt: [\n      'You are analyzing Reddit comments for market research.',\n      'Summarize the main pain points, repeated objections, buying intent, and product opportunities.',\n      'Use the provided comments as evidence and avoid inventing facts.',\n      `Post: ${post.postTitle || post.postUrl}`,\n      `Subreddit: ${post.subreddit || 'unknown'}`,\n      `Comment count: ${post.totalComments}`,\n      `Pain point examples: ${JSON.stringify(post.painPointComments)}`,\n      `Representative comments: ${JSON.stringify(post.sampleComments)}`,\n    ].join('\\n')\n  },\n}));"
+      },
+      "id": "3410100b-a43f-4c75-af4d-a0210de1d0e2",
+      "name": "Build AI Research Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Run Reddit Comment Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Reddit Comment Scraper": {
+      "main": [
+        [
+          {
+            "node": "Build AI Research Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "active": false,
+  "tags": ["reddit", "apify", "ai"]
+}

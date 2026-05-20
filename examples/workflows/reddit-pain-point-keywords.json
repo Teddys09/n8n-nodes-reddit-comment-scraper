@@ -1,0 +1,80 @@
+{
+  "name": "Reddit pain point keyword scoring",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1d5c3936-6521-4f53-ad24-08629ed7f41cb",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "operation": "runAndGetComments",
+        "actorId": "Newbs/reddit-comment-scraper",
+        "postUrls": "https://www.reddit.com/r/startups/comments/1c4n8ew/what_tools_do_you_find_too_expensive/",
+        "maxComments": 250,
+        "includeReplies": true,
+        "sortBy": "top",
+        "maxConcurrency": 2,
+        "useApifyProxy": true,
+        "proxyGroup": "RESIDENTIAL",
+        "proxyCountry": "US",
+        "datasetItemLimit": 1000,
+        "waitForFinishSeconds": 900,
+        "pollIntervalSeconds": 5,
+        "buildTag": "latest",
+        "memoryMbytes": 1024,
+        "actorTimeoutSeconds": 1800
+      },
+      "id": "b1dc5a0d-1231-4102-9780-69c2e48232be",
+      "name": "Scrape Reddit Comments",
+      "type": "n8n-nodes-reddit-comment-scraper.redditCommentScraper",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const indicators = [\n  'problem', 'issue', 'bug', 'broken', 'wish', 'need', 'missing',\n  'frustrating', 'expensive', 'slow', 'hate', 'annoying', 'hard to',\n  'confusing', 'pain', 'manual', 'waste of time', 'does not', \"doesn't\",\n];\n\nreturn $input.all()\n  .map((item) => {\n    const row = item.json;\n    const text = String(row.commentText || '').toLowerCase();\n    const matchedIndicators = indicators.filter((indicator) => text.includes(indicator));\n\n    return {\n      json: {\n        postUrl: row.postUrl,\n        subreddit: row.subreddit,\n        postTitle: row.postTitle,\n        commentAuthor: row.commentAuthor,\n        commentText: row.commentText,\n        commentTimestamp: row.commentTimestamp,\n        commentPath: row.commentPath,\n        painPointScore: matchedIndicators.length,\n        matchedIndicators,\n        apifyRunId: row.apifyRunId,\n      },\n    };\n  })\n  .filter((item) => item.json.painPointScore > 0)\n  .sort((a, b) => b.json.painPointScore - a.json.painPointScore);"
+      },
+      "id": "19d6baee-53d4-4771-8ee7-3f34716b182d",
+      "name": "Score Pain Points",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Scrape Reddit Comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Reddit Comments": {
+      "main": [
+        [
+          {
+            "node": "Score Pain Points",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "active": false,
+  "tags": ["reddit", "apify", "pain-points"]
+}

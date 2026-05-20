@@ -1,8 +1,19 @@
 # n8n Nodes: Reddit Comment Scraper
 
+[![npm version](https://img.shields.io/npm/v/n8n-nodes-reddit-comment-scraper.svg)](https://www.npmjs.com/package/n8n-nodes-reddit-comment-scraper)
+[![GitHub release](https://img.shields.io/github/v/release/Teddys09/n8n-nodes-reddit-comment-scraper)](https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Run the private **Reddit Comment Scraper** Apify Actor from n8n and return one n8n item per Reddit comment.
 
 This package is only a public n8n wrapper. It does not contain the Actor scraping implementation, browser automation logic, proxy handling, or any Apify secrets. Users bring their own Apify API token, and the paid Actor runs on Apify.
+
+## Links
+
+- n8n package: https://www.npmjs.com/package/n8n-nodes-reddit-comment-scraper
+- GitHub repository: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper
+- Apify Actor: https://apify.com/Newbs/reddit-comment-scraper
+- Apify n8n docs: https://docs.apify.com/platform/integrations/n8n
 
 ## What It Does
 
@@ -36,6 +47,16 @@ npm install n8n-nodes-reddit-comment-scraper
 
 Restart n8n after installing the package.
 
+### n8n Cloud
+
+If your n8n Cloud workspace allows verified/community node installation, install the package by name:
+
+```text
+n8n-nodes-reddit-comment-scraper
+```
+
+If the package is not visible in search yet, use the exact package name. npm search and n8n indexing can lag after a new release.
+
 ## Credentials
 
 Create an **Apify API** credential in n8n and paste your Apify API token.
@@ -45,6 +66,8 @@ Get the token from:
 ```text
 Apify Console > Settings > Integrations > API token
 ```
+
+The token is stored in n8n credentials. It is never included in this package and is never sent anywhere except Apify API requests.
 
 ## Inputs
 
@@ -72,6 +95,44 @@ Starts the Actor and returns the Apify run metadata immediately.
 
 Use this for very large jobs or workflows that want to monitor the run later.
 
+## Output
+
+The node returns one n8n item per Reddit comment. Typical fields include:
+
+| Field | Description |
+| --- | --- |
+| `postUrl` | Original Reddit post URL |
+| `postTitle` | Reddit post title |
+| `subreddit` | Subreddit name |
+| `commentAuthor` | Reddit comment author |
+| `commentText` | Full comment text |
+| `commentTimestamp` | Comment timestamp |
+| `commentDepth` | Nesting depth, where `0` is top-level |
+| `commentPath` | Thread path, for example `0/1` |
+| `parentPath` | Parent thread path |
+| `isTopLevel` | Whether this comment is top-level |
+| `replyCount` | Direct reply count |
+| `apifyRunId` | Apify Actor run ID |
+| `apifyDatasetId` | Apify dataset ID |
+
+## Workflow Starters
+
+Importable examples are included in [`examples/workflows`](examples/workflows):
+
+| Workflow | Purpose |
+| --- | --- |
+| `reddit-comments-clean-export.json` | Normalize comments for Sheets, CSV, Airtable, or databases. |
+| `reddit-pain-point-keywords.json` | Find comments with pain-point language for product research. |
+| `reddit-thread-metrics.json` | Aggregate reply ratio, max depth, and author counts by Reddit post. |
+
+To use them:
+
+1. Install this community node.
+2. Import one workflow JSON file into n8n.
+3. Add your Apify API credential to the **Scrape Reddit Comments** node.
+4. Replace the example Reddit URL.
+5. Start with a low `Maximum Comments` value for the first paid test run.
+
 ## Monetization
 
 This node does not charge users directly. It routes usage to the Apify Actor, where pay-per-event billing is configured. When n8n users run the node with their Apify API token, the Actor run is billed through Apify and creator revenue is handled by Apify Store monetization.
@@ -88,7 +149,9 @@ This node does not charge users directly. It routes usage to the Apify Actor, wh
 
 ```bash
 npm install
+npm run lint
 npm run check
+npx @n8n/scan-community-package n8n-nodes-reddit-comment-scraper
 ```
 
 `npm run check` builds the TypeScript node and verifies the package contents with `npm pack --dry-run`.
@@ -96,3 +159,5 @@ npm run check
 ## Publish
 
 Publish through GitHub Actions with npm provenance enabled. The included `.github/workflows/publish.yml` file is ready for the public wrapper repository.
+
+The package was published with npm provenance so n8n can verify that it was built from this GitHub repository.

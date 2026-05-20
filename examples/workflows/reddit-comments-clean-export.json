@@ -1,0 +1,80 @@
+{
+  "name": "Reddit comments clean export",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f2e5a20f-cda8-4f15-9af4-e2c1f36f9e11",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "operation": "runAndGetComments",
+        "actorId": "Newbs/reddit-comment-scraper",
+        "postUrls": "https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/",
+        "maxComments": 100,
+        "includeReplies": true,
+        "sortBy": "top",
+        "maxConcurrency": 2,
+        "useApifyProxy": true,
+        "proxyGroup": "RESIDENTIAL",
+        "proxyCountry": "US",
+        "datasetItemLimit": 1000,
+        "waitForFinishSeconds": 900,
+        "pollIntervalSeconds": 5,
+        "buildTag": "latest",
+        "memoryMbytes": 1024,
+        "actorTimeoutSeconds": 1800
+      },
+      "id": "75541d60-fd30-4d7f-99bf-ffbecefc4c93",
+      "name": "Scrape Reddit Comments",
+      "type": "n8n-nodes-reddit-comment-scraper.redditCommentScraper",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return $input.all().map((item) => {\n  const row = item.json;\n  return {\n    json: {\n      postUrl: row.postUrl,\n      subreddit: row.subreddit,\n      postTitle: row.postTitle,\n      commentId: row.commentId,\n      commentAuthor: row.commentAuthor,\n      commentText: row.commentText,\n      commentTimestamp: row.commentTimestamp,\n      commentDepth: row.commentDepth,\n      isTopLevel: row.isTopLevel,\n      replyCount: row.replyCount,\n      commentPath: row.commentPath,\n      parentPath: row.parentPath,\n      apifyRunId: row.apifyRunId,\n      apifyDatasetId: row.apifyDatasetId,\n    },\n  };\n});"
+      },
+      "id": "72a0d814-972c-405e-aa91-ef991c6a5fc0",
+      "name": "Clean Export Rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Scrape Reddit Comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Reddit Comments": {
+      "main": [
+        [
+          {
+            "node": "Clean Export Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "active": false,
+  "tags": ["reddit", "apify", "export"]
+}

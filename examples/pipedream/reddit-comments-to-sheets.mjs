@@ -1,6 +1,17 @@
 const ACTOR_ENDPOINT =
   "https://api.apify.com/v2/acts/Newbs~reddit-comment-scraper/run-sync-get-dataset-items";
 
+function getTriggerBody(steps) {
+  const body = steps?.trigger?.event?.body;
+  return body && typeof body === "object" ? body : {};
+}
+
+function normalizePostUrls(value, fallback) {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (typeof value === "string" && value.trim()) return [value.trim()];
+  return [fallback];
+}
+
 async function runRedditActor({ token, input, timeoutSeconds = 300 }) {
   const url = new URL(ACTOR_ENDPOINT);
   url.searchParams.set("clean", "true");
@@ -17,7 +28,9 @@ async function runRedditActor({ token, input, timeoutSeconds = 300 }) {
   });
 
   if (!response.ok) {
-    throw new Error(`Apify Actor run failed: ${response.status} ${await response.text()}`);
+    throw new Error(
+      `Apify Actor run failed: ${response.status} ${await response.text()}`,
+    );
   }
 
   return response.json();
@@ -25,7 +38,8 @@ async function runRedditActor({ token, input, timeoutSeconds = 300 }) {
 
 export default defineComponent({
   name: "Scrape Reddit comments to Sheets-ready rows",
-  description: "Runs the Reddit Comment Scraper Apify Actor and returns clean rows for Google Sheets or CSV exports.",
+  description:
+    "Runs the Reddit Comment Scraper Apify Actor and returns clean rows for Google Sheets, CSV, Airtable, Notion, or Slack.",
   props: {
     apifyToken: {
       type: "string",
@@ -34,14 +48,14 @@ export default defineComponent({
     },
     redditPostUrl: {
       type: "string",
-      label: "Reddit post URL",
+      label: "Fallback Reddit post URL",
       default:
         "https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/",
     },
     maxComments: {
       type: "integer",
-      label: "Maximum comments",
-      default: 10,
+      label: "Fallback maximum comments",
+      default: 5,
       min: 1,
       max: 500,
     },
@@ -57,14 +71,21 @@ export default defineComponent({
       options: ["top", "best", "new", "controversial", "old", "qa"],
     },
   },
-  async run() {
+  async run({ steps }) {
+    const body = getTriggerBody(steps);
+    const postUrls = normalizePostUrls(
+      body.postUrls || body.postUrl,
+      this.redditPostUrl,
+    );
+    const maxComments = Number(body.maxComments || this.maxComments || 5);
+
     const items = await runRedditActor({
       token: this.apifyToken,
       input: {
-        postUrls: [this.redditPostUrl],
-        maxComments: this.maxComments,
-        includeReplies: this.includeReplies,
-        sortBy: this.sortBy,
+        postUrls,
+        maxComments,
+        includeReplies: body.includeReplies ?? this.includeReplies,
+        sortBy: body.sortBy || this.sortBy,
         maxConcurrency: 1,
         proxy: {
           useApifyProxy: true,
@@ -90,4 +111,3 @@ export default defineComponent({
     }));
   },
 });
-

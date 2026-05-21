@@ -22,13 +22,13 @@ https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 
 ## Recommended Channel Order
 
-| Priority | Channel | What to publish | Why it matters |
-| --- | --- | --- | --- |
-| 1 | Make.com | Scenario templates based on `examples/make/scenario-templates.json` | Strong no-code audience and official Apify integration. |
-| 2 | Pipedream | Copy-paste workflow components in `examples/pipedream` | Technical users can run the Actor quickly and adapt the code. |
-| 3 | Zapier | Zap specs and Webhooks fallback in `examples/zapier` | Large automation audience; use Apify official app or direct Apify API calls. |
-| 4 | AI agents | OpenAPI action schema and MCP server in `examples/ai-agents` | Lets users ask an agent to research Reddit threads with the Actor. |
-| 5 | Community/content | Reddit, Indie Hackers, Product Hunt, Dev.to, YouTube, LinkedIn | Higher discovery than small connector marketplaces when content is useful. |
+| Priority | Channel           | What to publish                                                     | Why it matters                                                               |
+| -------- | ----------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 1        | Make.com          | Scenario templates based on `examples/make/scenario-templates.json` | Strong no-code audience and official Apify integration.                      |
+| 2        | Pipedream         | Copy-paste workflow components in `examples/pipedream`              | Technical users can run the Actor quickly and adapt the code.                |
+| 3        | Zapier            | Zap specs and Webhooks fallback in `examples/zapier`                | Large automation audience; use Apify official app or direct Apify API calls. |
+| 4        | AI agents         | OpenAPI action schema and MCP server in `examples/ai-agents`        | Lets users ask an agent to research Reddit threads with the Actor.           |
+| 5        | Community/content | Reddit, Indie Hackers, Product Hunt, Dev.to, YouTube, LinkedIn      | Higher discovery than small connector marketplaces when content is useful.   |
 
 ## Monetization Flow
 
@@ -57,13 +57,13 @@ https://apify.com/Newbs/reddit-comment-scraper?utm_source=ai-agent&utm_medium=op
 
 ## Asset Map
 
-| Folder | Purpose |
-| --- | --- |
-| `examples/official-apify-workflows` | n8n workflows using the official Apify node. |
-| `examples/make` | Make.com scenario template specs and publishing guide. |
-| `examples/zapier` | Zapier template specs and direct Apify API fallback steps. |
-| `examples/pipedream` | Pipedream code components for Sheets-ready rows and Slack alerts. |
-| `examples/ai-agents` | GPT Action OpenAPI schema and local MCP server proof of concept. |
+| Folder                              | Purpose                                                           |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| `examples/official-apify-workflows` | n8n workflows using the official Apify node.                      |
+| `examples/make`                     | Make.com scenario template specs and publishing guide.            |
+| `examples/zapier`                   | Zapier template specs and direct Apify API fallback steps.        |
+| `examples/pipedream`                | Pipedream code components for Sheets-ready rows and Slack alerts. |
+| `examples/ai-agents`                | GPT Action OpenAPI schema and local MCP server proof of concept.  |
 
 ## Submission Checklist
 
@@ -83,6 +83,22 @@ Make-specific tested setup:
 2. Add Apify > Get Dataset Items as the next module.
 3. Use `{{1.defaultDatasetId}}` for Dataset ID, Clean transformation, JSON format, and a small test limit such as `5`.
 4. Confirm the Get Dataset Items output emits one bundle per Reddit comment.
+
+Pipedream-specific tested setup:
+
+1. Create a project and workflow with an HTTP/Webhook trigger.
+2. Test the trigger with a Reddit post URL, `maxComments: 5`, `includeReplies: true`, and `sortBy: "top"`.
+3. Add the Node.js component from `examples/pipedream/reddit-comments-to-sheets.mjs`.
+4. Store the Apify API token in Pipedream as the secret `Apify API token`.
+5. Keep the workflow in draft until the token is configured and destination steps are added.
+
+Zapier-specific tested setup:
+
+1. Use `Schedule by Zapier` with trigger event `Every Day`.
+2. Set Time of Day to `9:00 AM`; the trigger test returned a sample day record on May 21, 2026.
+3. Add the official `Apify` app as step 2 and choose `Run Actor`.
+4. Stop at `Connect Apify` until the user confirms persistent Apify access inside Zapier.
+5. Confirm paid-feature or post-trial cost before publishing or turning on the Zap.
 
 ## Best Public Positioning
 

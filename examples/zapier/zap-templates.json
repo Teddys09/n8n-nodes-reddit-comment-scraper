@@ -10,15 +10,13 @@
     "postUrls": [
       "https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/"
     ],
-    "maxComments": 10,
+    "maxComments": 5,
     "includeReplies": true,
     "sortBy": "top",
     "maxConcurrency": 1,
     "proxy": {
       "useApifyProxy": true,
-      "apifyProxyGroups": [
-        "RESIDENTIAL"
-      ],
+      "apifyProxyGroups": ["RESIDENTIAL"],
       "apifyProxyCountry": "US"
     }
   },
@@ -31,7 +29,7 @@
         {
           "app": "Schedule by Zapier or Webhooks by Zapier",
           "event": "Trigger",
-          "notes": "Run on demand, from a form, or on a schedule."
+          "notes": "Run on demand, from a form, or on a schedule. A daily Schedule by Zapier trigger at 9:00 AM was verified in a draft."
         },
         {
           "app": "Apify",
@@ -144,4 +142,3 @@
     }
   ]
 }
-

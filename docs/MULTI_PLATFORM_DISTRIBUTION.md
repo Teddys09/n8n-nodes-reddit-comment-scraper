@@ -77,6 +77,13 @@ For each platform:
 6. Include the tracked Actor link for that platform.
 7. Save screenshots or a short video for review.
 
+Make-specific tested setup:
+
+1. Use Apify > Run an Actor with Run synchronously set to Yes.
+2. Add Apify > Get Dataset Items as the next module.
+3. Use `{{1.defaultDatasetId}}` for Dataset ID, Clean transformation, JSON format, and a small test limit such as `5`.
+4. Confirm the Get Dataset Items output emits one bundle per Reddit comment.
+
 ## Best Public Positioning
 
 Use this positioning in communities and marketplaces:
@@ -84,4 +91,3 @@ Use this positioning in communities and marketplaces:
 ```text
 Ready-to-use Reddit comment research workflows. They run the Reddit Comment Scraper Actor on Apify and turn Reddit discussions into clean rows, Slack alerts, Sheets exports, competitor research, pain-point lists, or AI research briefs.
 ```
-

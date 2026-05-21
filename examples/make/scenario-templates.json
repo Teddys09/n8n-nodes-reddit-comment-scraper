@@ -34,17 +34,21 @@
         },
         {
           "app": "Apify",
-          "module": "Run Actor and get dataset items",
+          "module": "Run an Actor",
           "mapping": {
             "actorId": "Newbs/reddit-comment-scraper",
-            "input": "{{defaultActorInput}}"
+            "input": "{{defaultActorInput}}",
+            "runSynchronously": true
           }
         },
         {
-          "app": "Tools",
-          "module": "Iterator",
+          "app": "Apify",
+          "module": "Get Dataset Items",
           "mapping": {
-            "array": "Apify dataset items"
+            "datasetId": "{{1.defaultDatasetId}}",
+            "format": "json",
+            "dataTransformation": "clean",
+            "limit": 5
           }
         },
         {
@@ -75,17 +79,21 @@
         },
         {
           "app": "Apify",
-          "module": "Run Actor and get dataset items",
+          "module": "Run an Actor",
           "mapping": {
             "actorId": "Newbs/reddit-comment-scraper",
-            "input": "{{defaultActorInput}}"
+            "input": "{{defaultActorInput}}",
+            "runSynchronously": true
           }
         },
         {
-          "app": "Tools",
-          "module": "Iterator",
+          "app": "Apify",
+          "module": "Get Dataset Items",
           "mapping": {
-            "array": "Apify dataset items"
+            "datasetId": "{{1.defaultDatasetId}}",
+            "format": "json",
+            "dataTransformation": "clean",
+            "limit": 5
           }
         },
         {
@@ -120,15 +128,22 @@
         },
         {
           "app": "Apify",
-          "module": "Run Actor and get dataset items",
+          "module": "Run an Actor",
           "mapping": {
             "actorId": "Newbs/reddit-comment-scraper",
-            "input": "{{defaultActorInput with webhook URL}}"
+            "input": "{{defaultActorInput with webhook URL}}",
+            "runSynchronously": true
           }
         },
         {
-          "app": "Tools",
-          "module": "Iterator"
+          "app": "Apify",
+          "module": "Get Dataset Items",
+          "mapping": {
+            "datasetId": "{{1.defaultDatasetId}}",
+            "format": "json",
+            "dataTransformation": "clean",
+            "limit": 5
+          }
         },
         {
           "app": "Filter",
@@ -167,10 +182,21 @@
         },
         {
           "app": "Apify",
-          "module": "Run Actor and get dataset items",
+          "module": "Run an Actor",
           "mapping": {
             "actorId": "Newbs/reddit-comment-scraper",
-            "input": "{{defaultActorInput}}"
+            "input": "{{defaultActorInput}}",
+            "runSynchronously": true
+          }
+        },
+        {
+          "app": "Apify",
+          "module": "Get Dataset Items",
+          "mapping": {
+            "datasetId": "{{1.defaultDatasetId}}",
+            "format": "json",
+            "dataTransformation": "clean",
+            "limit": 5
           }
         },
         {
@@ -193,4 +219,3 @@
     }
   ]
 }
-

@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-reddit-comment-scraper",
-  "version": "0.1.7",
-  "description": "n8n community node for running the Reddit Comment Scraper Apify Actor and returning comment datasets.",
+  "version": "0.1.8",
+  "description": "Automation templates and an optional n8n community node for the Reddit Comment Scraper Apify Actor.",
   "license": "MIT",
   "homepage": "https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3",
   "repository": {
@@ -25,21 +25,31 @@
     "social-listening",
     "sentiment-analysis",
     "market-research",
-    "automation"
+    "automation",
+    "make",
+    "zapier",
+    "pipedream",
+    "gpt-actions",
+    "mcp",
+    "ai-agent"
   ],
   "main": "dist/nodes/RedditCommentScraper/RedditCommentScraper.node.js",
   "types": "dist/nodes/RedditCommentScraper/RedditCommentScraper.node.d.ts",
   "files": [
     "credentials",
+    "docs",
     "dist",
     "eslint.config.mjs",
+    "examples",
     "nodes",
+    "scripts/validate-distribution-assets.mjs",
     "tsconfig.json"
   ],
   "scripts": {
     "build": "n8n-node build",
     "build:watch": "tsc --watch",
-    "check": "npm run build && npm pack --dry-run",
+    "check": "npm run build && npm pack --dry-run && npm run check:distribution",
+    "check:distribution": "node scripts/validate-distribution-assets.mjs",
     "dev": "n8n-node dev",
     "lint": "n8n-node lint",
     "lint:fix": "n8n-node lint --fix",

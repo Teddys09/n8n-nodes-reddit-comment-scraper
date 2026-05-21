@@ -1,0 +1,258 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Reddit Comment Scraper Apify Actor",
+    "version": "0.1.0",
+    "description": "Run the Newbs/reddit-comment-scraper Apify Actor and return Reddit comment rows. This action starts a paid Apify Actor run, so the assistant should confirm before calling it."
+  },
+  "servers": [
+    {
+      "url": "https://api.apify.com/v2"
+    }
+  ],
+  "paths": {
+    "/acts/Newbs~reddit-comment-scraper/run-sync-get-dataset-items": {
+      "post": {
+        "operationId": "scrapeRedditComments",
+        "summary": "Scrape Reddit comments from one or more Reddit post URLs",
+        "description": "Runs the Reddit Comment Scraper Actor synchronously and returns dataset items. Start with a low maxComments value because this can start a paid Apify run.",
+        "x-openai-isConsequential": true,
+        "security": [
+          {
+            "ApifyBearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "clean",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "description": "Return clean dataset items."
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "json",
+              "enum": [
+                "json"
+              ]
+            },
+            "description": "Return JSON dataset items."
+          },
+          {
+            "name": "timeout",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 300,
+              "minimum": 30,
+              "maximum": 300
+            },
+            "description": "Maximum time in seconds to wait for the Actor run."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedditCommentScraperInput"
+              },
+              "example": {
+                "postUrls": [
+                  "https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/"
+                ],
+                "maxComments": 5,
+                "includeReplies": true,
+                "sortBy": "top",
+                "maxConcurrency": 1,
+                "proxy": {
+                  "useApifyProxy": true,
+                  "apifyProxyGroups": [
+                    "RESIDENTIAL"
+                  ],
+                  "apifyProxyCountry": "US"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Array of scraped Reddit comment rows.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RedditComment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          },
+          "401": {
+            "description": "Invalid or missing Apify API token."
+          },
+          "402": {
+            "description": "Payment or Actor usage limit issue on Apify."
+          },
+          "408": {
+            "description": "Actor run did not finish within the sync timeout."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApifyBearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Apify API token."
+      }
+    },
+    "schemas": {
+      "RedditCommentScraperInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "postUrls"
+        ],
+        "properties": {
+          "postUrls": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://www\\.reddit\\.com/r/[^/]+/comments/[^/]+/.*$"
+            },
+            "description": "Full Reddit post URLs to scrape."
+          },
+          "maxComments": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "default": 10,
+            "description": "Maximum comments per post. Use low values for tests."
+          },
+          "includeReplies": {
+            "type": "boolean",
+            "default": true,
+            "description": "Include nested replies when true."
+          },
+          "sortBy": {
+            "type": "string",
+            "default": "top",
+            "enum": [
+              "top",
+              "best",
+              "new",
+              "controversial",
+              "old",
+              "qa"
+            ],
+            "description": "Reddit comment sort order."
+          },
+          "maxConcurrency": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "default": 1,
+            "description": "Number of posts processed concurrently."
+          },
+          "proxy": {
+            "$ref": "#/components/schemas/ApifyProxyConfig"
+          }
+        }
+      },
+      "ApifyProxyConfig": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "useApifyProxy": {
+            "type": "boolean",
+            "default": true
+          },
+          "apifyProxyGroups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "RESIDENTIAL"
+            ]
+          },
+          "apifyProxyCountry": {
+            "type": "string",
+            "default": "US"
+          }
+        }
+      },
+      "RedditComment": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "postUrl": {
+            "type": "string"
+          },
+          "postTitle": {
+            "type": "string"
+          },
+          "postAuthor": {
+            "type": "string"
+          },
+          "postScore": {
+            "type": "string"
+          },
+          "subreddit": {
+            "type": "string"
+          },
+          "commentDepth": {
+            "type": "integer"
+          },
+          "commentAuthor": {
+            "type": "string"
+          },
+          "commentText": {
+            "type": "string"
+          },
+          "commentTimestamp": {
+            "type": "string"
+          },
+          "commentId": {
+            "type": "string"
+          },
+          "commentPath": {
+            "type": "string"
+          },
+          "parentPath": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isTopLevel": {
+            "type": "boolean"
+          },
+          "replyCount": {
+            "type": "integer"
+          },
+          "scrapedAt": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+

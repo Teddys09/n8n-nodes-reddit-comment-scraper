@@ -28,6 +28,7 @@ This package is only a public n8n wrapper. It does not contain the Actor scrapin
 - GitHub repository: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper
 - Apify Actor: https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 - Apify n8n docs: https://docs.apify.com/platform/integrations/n8n
+- Multi-platform distribution plan: [docs/MULTI_PLATFORM_DISTRIBUTION.md](docs/MULTI_PLATFORM_DISTRIBUTION.md)
 
 ## What It Does
 
@@ -146,6 +147,19 @@ These templates use `@apify/n8n-nodes-apify` and are the best option for n8n Clo
 
 Promotion copy and posting drafts are included in [`docs/N8N_DISTRIBUTION_KIT.md`](docs/N8N_DISTRIBUTION_KIT.md).
 
+## Other Automation Platforms
+
+This repository also includes distribution assets for non-n8n channels:
+
+| Folder | Purpose |
+| --- | --- |
+| [`examples/make`](examples/make) | Make.com scenario template specs for Sheets, Slack, Airtable, and AI briefs. |
+| [`examples/zapier`](examples/zapier) | Zapier template specs plus a Webhooks by Zapier direct Apify API fallback. |
+| [`examples/pipedream`](examples/pipedream) | Pipedream copy-paste components for Sheets-ready rows and Slack alerts. |
+| [`examples/ai-agents`](examples/ai-agents) | OpenAPI schema for GPT Actions and a local MCP server proof of concept. |
+
+These assets call the Apify Actor. They do not include the private scraping implementation.
+
 Self-hosted shortcut examples for this package are included in [`examples/workflows`](examples/workflows):
 
 | Workflow | Purpose |
@@ -180,6 +194,7 @@ This node does not charge users directly. It routes usage to the Apify Actor, wh
 npm install
 npm run lint
 npm run check
+npm run check:distribution
 npx @n8n/scan-community-package n8n-nodes-reddit-comment-scraper
 ```
 

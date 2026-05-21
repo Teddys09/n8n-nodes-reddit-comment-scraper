@@ -1,0 +1,196 @@
+{
+  "platform": "make",
+  "assetType": "scenario-template-specs",
+  "actor": {
+    "id": "Newbs/reddit-comment-scraper",
+    "storeUrl": "https://apify.com/Newbs/reddit-comment-scraper?utm_source=make&utm_medium=template&utm_campaign=reddit-research&fpr=nmao3"
+  },
+  "defaultActorInput": {
+    "postUrls": [
+      "https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/"
+    ],
+    "maxComments": 10,
+    "includeReplies": true,
+    "sortBy": "top",
+    "maxConcurrency": 1,
+    "proxy": {
+      "useApifyProxy": true,
+      "apifyProxyGroups": [
+        "RESIDENTIAL"
+      ],
+      "apifyProxyCountry": "US"
+    }
+  },
+  "templates": [
+    {
+      "slug": "reddit-comments-to-google-sheets",
+      "title": "Reddit comments to Google Sheets with Apify",
+      "description": "Scrape Reddit comments from a post and append clean rows to Google Sheets for research, tagging, or reporting.",
+      "modules": [
+        {
+          "app": "Scheduler or Webhooks",
+          "module": "Start scenario",
+          "notes": "Use Scheduler for recurring monitoring or Webhooks for manual form/API triggers."
+        },
+        {
+          "app": "Apify",
+          "module": "Run Actor and get dataset items",
+          "mapping": {
+            "actorId": "Newbs/reddit-comment-scraper",
+            "input": "{{defaultActorInput}}"
+          }
+        },
+        {
+          "app": "Tools",
+          "module": "Iterator",
+          "mapping": {
+            "array": "Apify dataset items"
+          }
+        },
+        {
+          "app": "Google Sheets",
+          "module": "Add a row",
+          "fieldMapping": {
+            "postUrl": "{{postUrl}}",
+            "postTitle": "{{postTitle}}",
+            "subreddit": "{{subreddit}}",
+            "commentAuthor": "{{commentAuthor}}",
+            "commentText": "{{commentText}}",
+            "commentDepth": "{{commentDepth}}",
+            "isTopLevel": "{{isTopLevel}}",
+            "replyCount": "{{replyCount}}",
+            "scrapedAt": "{{scrapedAt}}"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "reddit-brand-monitor-slack",
+      "title": "Reddit brand monitor with Slack alerts",
+      "description": "Scrape a Reddit thread, filter comments for brand or competitor keywords, and send compact alerts to Slack.",
+      "modules": [
+        {
+          "app": "Scheduler",
+          "module": "Run once per day or hour"
+        },
+        {
+          "app": "Apify",
+          "module": "Run Actor and get dataset items",
+          "mapping": {
+            "actorId": "Newbs/reddit-comment-scraper",
+            "input": "{{defaultActorInput}}"
+          }
+        },
+        {
+          "app": "Tools",
+          "module": "Iterator",
+          "mapping": {
+            "array": "Apify dataset items"
+          }
+        },
+        {
+          "app": "Filter",
+          "module": "Continue only if comment text contains a tracked keyword",
+          "exampleKeywords": [
+            "your brand",
+            "competitor",
+            "alternative",
+            "pricing",
+            "bug"
+          ]
+        },
+        {
+          "app": "Slack",
+          "module": "Create a message",
+          "fieldMapping": {
+            "message": "*{{subreddit}}* - {{postTitle}}\n{{commentAuthor}}: {{commentText}}\n{{postUrl}}"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "reddit-pain-point-research-airtable",
+      "title": "Reddit pain-point research to Airtable",
+      "description": "Find Reddit comments with buying-intent or pain-point language and store them in Airtable.",
+      "modules": [
+        {
+          "app": "Webhooks",
+          "module": "Custom webhook",
+          "notes": "Accept a Reddit post URL and optional keyword list from a form or internal tool."
+        },
+        {
+          "app": "Apify",
+          "module": "Run Actor and get dataset items",
+          "mapping": {
+            "actorId": "Newbs/reddit-comment-scraper",
+            "input": "{{defaultActorInput with webhook URL}}"
+          }
+        },
+        {
+          "app": "Tools",
+          "module": "Iterator"
+        },
+        {
+          "app": "Filter",
+          "module": "Continue only if comment contains pain-point language",
+          "exampleKeywords": [
+            "hate",
+            "frustrating",
+            "expensive",
+            "looking for",
+            "alternative",
+            "recommend"
+          ]
+        },
+        {
+          "app": "Airtable",
+          "module": "Create a record",
+          "fieldMapping": {
+            "Subreddit": "{{subreddit}}",
+            "Post title": "{{postTitle}}",
+            "Comment": "{{commentText}}",
+            "Author": "{{commentAuthor}}",
+            "Depth": "{{commentDepth}}",
+            "Source URL": "{{postUrl}}"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "reddit-ai-research-brief",
+      "title": "Reddit AI research brief from comments",
+      "description": "Scrape Reddit comments, compact them into a research payload, and pass the payload to an AI module.",
+      "modules": [
+        {
+          "app": "Manual trigger or Webhooks",
+          "module": "Start with one Reddit URL"
+        },
+        {
+          "app": "Apify",
+          "module": "Run Actor and get dataset items",
+          "mapping": {
+            "actorId": "Newbs/reddit-comment-scraper",
+            "input": "{{defaultActorInput}}"
+          }
+        },
+        {
+          "app": "Tools",
+          "module": "Text aggregator",
+          "mapping": {
+            "text": "{{commentAuthor}}: {{commentText}}"
+          }
+        },
+        {
+          "app": "OpenAI or other AI provider",
+          "module": "Create a completion/chat response",
+          "prompt": "Summarize the top pain points, repeated requests, objections, and product opportunities from these Reddit comments. Return bullets grouped by theme."
+        },
+        {
+          "app": "Google Docs, Notion, or Slack",
+          "module": "Save or send the research brief"
+        }
+      ]
+    }
+  ]
+}
+

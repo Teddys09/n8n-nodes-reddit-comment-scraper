@@ -1,0 +1,147 @@
+{
+  "platform": "zapier",
+  "assetType": "zap-template-specs",
+  "actor": {
+    "id": "Newbs/reddit-comment-scraper",
+    "apiActorId": "Newbs~reddit-comment-scraper",
+    "storeUrl": "https://apify.com/Newbs/reddit-comment-scraper?utm_source=zapier&utm_medium=template&utm_campaign=reddit-research&fpr=nmao3"
+  },
+  "defaultActorInput": {
+    "postUrls": [
+      "https://www.reddit.com/r/AskReddit/comments/ovihp9/what_city_would_you_never_ever_ever_live_in/"
+    ],
+    "maxComments": 10,
+    "includeReplies": true,
+    "sortBy": "top",
+    "maxConcurrency": 1,
+    "proxy": {
+      "useApifyProxy": true,
+      "apifyProxyGroups": [
+        "RESIDENTIAL"
+      ],
+      "apifyProxyCountry": "US"
+    }
+  },
+  "templates": [
+    {
+      "slug": "new-reddit-comments-to-google-sheets",
+      "title": "Add Reddit comments from Apify to Google Sheets",
+      "description": "Run the Reddit Comment Scraper Actor and append one Google Sheets row per Reddit comment.",
+      "steps": [
+        {
+          "app": "Schedule by Zapier or Webhooks by Zapier",
+          "event": "Trigger",
+          "notes": "Run on demand, from a form, or on a schedule."
+        },
+        {
+          "app": "Apify",
+          "event": "Run Actor",
+          "mapping": {
+            "actorId": "Newbs/reddit-comment-scraper",
+            "input": "{{defaultActorInput}}"
+          }
+        },
+        {
+          "app": "Looping by Zapier",
+          "event": "Loop over dataset items",
+          "notes": "If the Apify Zapier app does not expose dataset items directly, use the Webhooks fallback file in this folder."
+        },
+        {
+          "app": "Google Sheets",
+          "event": "Create Spreadsheet Row",
+          "fields": [
+            "postUrl",
+            "postTitle",
+            "subreddit",
+            "commentAuthor",
+            "commentText",
+            "commentDepth",
+            "isTopLevel",
+            "replyCount",
+            "scrapedAt"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "reddit-brand-mentions-to-slack",
+      "title": "Send Reddit brand mentions to Slack",
+      "description": "Run the Reddit Comment Scraper Actor, filter comments for brand terms, and send matches to Slack.",
+      "steps": [
+        {
+          "app": "Schedule by Zapier",
+          "event": "Every day or every hour"
+        },
+        {
+          "app": "Apify",
+          "event": "Run Actor",
+          "mapping": {
+            "actorId": "Newbs/reddit-comment-scraper",
+            "input": "{{defaultActorInput}}"
+          }
+        },
+        {
+          "app": "Filter by Zapier",
+          "event": "Only continue if commentText contains one tracked term",
+          "exampleTerms": [
+            "your brand",
+            "competitor",
+            "alternative",
+            "pricing",
+            "bug"
+          ]
+        },
+        {
+          "app": "Slack",
+          "event": "Send Channel Message",
+          "message": "*{{subreddit}}* - {{postTitle}}\n{{commentAuthor}}: {{commentText}}\n{{postUrl}}"
+        }
+      ]
+    },
+    {
+      "slug": "reddit-pain-points-to-airtable",
+      "title": "Save Reddit pain points to Airtable",
+      "description": "Collect Reddit comments and save comments with pain-point language to an Airtable research base.",
+      "steps": [
+        {
+          "app": "Webhooks by Zapier",
+          "event": "Catch Hook",
+          "notes": "Send a Reddit URL from a form or internal app."
+        },
+        {
+          "app": "Apify",
+          "event": "Run Actor",
+          "mapping": {
+            "actorId": "Newbs/reddit-comment-scraper",
+            "input": "{{defaultActorInput with webhook URL}}"
+          }
+        },
+        {
+          "app": "Filter by Zapier",
+          "event": "Only continue if pain-point terms are present",
+          "exampleTerms": [
+            "frustrating",
+            "expensive",
+            "looking for",
+            "alternative",
+            "recommend",
+            "problem"
+          ]
+        },
+        {
+          "app": "Airtable",
+          "event": "Create Record",
+          "fields": [
+            "Subreddit",
+            "Post title",
+            "Comment",
+            "Author",
+            "Depth",
+            "Source URL"
+          ]
+        }
+      ]
+    }
+  ]
+}
+

@@ -6,7 +6,7 @@ Use this when promoting the Reddit Comment Scraper workflows to n8n users.
 
 - Actor: https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 - Official Apify n8n docs: https://docs.apify.com/platform/integrations/n8n
-- Workflow JSONs: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
+- Workflow JSONs: [Newbs workflow examples](https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows)
 - Optional self-hosted shortcut node: https://www.npmjs.com/package/n8n-nodes-reddit-comment-scraper
 
 ## One-Line Positioning
@@ -15,7 +15,7 @@ Scrape Reddit comments into n8n with the official Apify node, then send clean di
 
 ## Short Description
 
-I made a set of ready-to-import n8n workflows for Reddit research. They use the official Apify node to run `Newbs/reddit-comment-scraper`, return one row per Reddit comment, and then format the output for common automation use cases like clean exports, pain-point detection, Slack alerts, competitor research, thread metrics, and AI research briefs.
+Newbs published a set of ready-to-import n8n workflows for Reddit research. They use the official Apify node to run `Newbs/reddit-comment-scraper`, return one row per Reddit comment, and then format the output for common automation use cases like clean exports, pain-point detection, Slack alerts, competitor research, thread metrics, and AI research briefs.
 
 ## Template Submission Notes
 
@@ -49,7 +49,7 @@ Free workflows: Reddit comments to Sheets, Slack alerts, pain-point research, an
 Body:
 
 ````text
-I put together a small set of n8n workflows for Reddit research using the official Apify node.
+Newbs put together a small set of n8n workflows for Reddit research using the official Apify node.
 
 They run the Reddit Comment Scraper Actor, return one row per Reddit comment, and then format the results for common automation use cases:
 
@@ -62,7 +62,7 @@ They run the Reddit Comment Scraper Actor, return one row per Reddit comment, an
 
 The workflows use the official Apify node, not a custom community node.
 
-Workflow JSONs:
+Newbs workflow examples on GitHub:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
 Actor:
@@ -85,13 +85,13 @@ Use this only in the weekly self-promotion thread unless the moderators explicit
 Title:
 
 ```text
-I made n8n workflows for Reddit research using the official Apify node
+Newbs n8n workflows for Reddit research using the official Apify node
 ```
 
 Body:
 
 ```text
-I built a small set of ready-to-import n8n workflow JSONs for Reddit comment research using the official Apify node.
+Newbs built a small set of ready-to-import n8n workflow JSONs for Reddit comment research using the official Apify node.
 
 Disclosure: the workflow JSONs are public on GitHub. Running the Reddit Comment Scraper Actor uses Apify credits / the Actor's Apify pricing.
 
@@ -104,7 +104,7 @@ What the workflows do:
 - thread metrics
 - AI-ready research briefs
 
-Workflow code:
+Newbs workflow examples on GitHub:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
 Example output:
@@ -134,7 +134,7 @@ Feedback welcome, especially on which destination workflow would be most useful 
 ## LinkedIn Draft
 
 ```text
-I moved our Reddit-to-n8n integration to the official Apify node path and published ready-to-import workflow examples.
+Newbs moved the Reddit-to-n8n integration to the official Apify node path and published ready-to-import workflow examples.
 
 The workflows scrape Reddit comments and nested replies, then format them for:
 
@@ -147,7 +147,7 @@ The workflows scrape Reddit comments and nested replies, then format them for:
 
 This avoids a custom n8n wrapper and works with the accepted Apify integration path.
 
-Workflow JSONs:
+Newbs workflow examples on GitHub:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
 Actor:
@@ -166,19 +166,19 @@ Built ready-to-import n8n workflows for Reddit research using the official Apify
 - thread metrics
 - AI research briefs
 
-JSONs: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
+JSONs: Newbs workflow examples on GitHub: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 ```
 
 ## Product Hunt / Indie Hackers Draft
 
 ```text
-I built a set of n8n workflows for Reddit market research.
+Newbs built a set of n8n workflows for Reddit market research.
 
 They use Apify to scrape comments and nested replies from selected Reddit posts, then turn the data into clean outputs for Sheets, Slack, competitor research, pain-point scoring, thread metrics, and AI summaries.
 
 The goal is to help founders and operators turn Reddit discussions into usable customer research without building scraping or n8n plumbing from scratch.
 
-Workflow JSONs:
+Newbs workflow examples on GitHub:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
 Actor:

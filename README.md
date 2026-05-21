@@ -1,7 +1,6 @@
 # n8n Nodes: Reddit Comment Scraper
 
 [![npm version](https://img.shields.io/npm/v/n8n-nodes-reddit-comment-scraper.svg)](https://www.npmjs.com/package/n8n-nodes-reddit-comment-scraper)
-[![GitHub release](https://img.shields.io/github/v/release/Teddys09/n8n-nodes-reddit-comment-scraper)](https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Run the private **Reddit Comment Scraper** Apify Actor from n8n and return one n8n item per Reddit comment.
@@ -10,7 +9,7 @@ Run the private **Reddit Comment Scraper** Apify Actor from n8n and return one n
 
 This package is an optional shortcut for self-hosted n8n users. It is not the recommended n8n Cloud path.
 
-![Reddit Comment Scraper n8n workflow](https://raw.githubusercontent.com/Teddys09/n8n-nodes-reddit-comment-scraper/main/docs/assets/reddit-n8n-apify-workflow.svg)
+![Reddit Comment Scraper n8n workflow](docs/assets/reddit-n8n-apify-workflow.svg)
 
 n8n declined verified listing for this package because it wraps an Apify Actor and n8n already has an Apify node. For n8n Cloud and verified-node workflows, use the official Apify node package instead:
 
@@ -25,7 +24,7 @@ This package is only a public n8n wrapper. It does not contain the Actor scrapin
 ## Links
 
 - n8n package: https://www.npmjs.com/package/n8n-nodes-reddit-comment-scraper
-- GitHub repository: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper
+- Newbs workflow repository: [GitHub repository](https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper)
 - Apify Actor: https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 - Apify n8n docs: https://docs.apify.com/platform/integrations/n8n
 - Multi-platform distribution plan: [docs/MULTI_PLATFORM_DISTRIBUTION.md](docs/MULTI_PLATFORM_DISTRIBUTION.md)
@@ -86,15 +85,15 @@ The token is stored in n8n credentials. It is never included in this package and
 
 ## Inputs
 
-| Field | Description |
-| --- | --- |
-| `Actor ID` | Defaults to `Newbs/reddit-comment-scraper`. |
-| `Reddit Post URLs` | One or more full Reddit post URLs, separated by new lines or commas. |
-| `Maximum Comments` | Limit per Reddit post. |
-| `Include Nested Replies` | Keeps full conversation context when enabled. |
-| `Sort Comments By` | `top`, `best`, `new`, `controversial`, `old`, or `qa`. |
-| `Use Apify Proxy` | Enables proxy settings passed to the Actor. |
-| `Dataset Item Limit` | Maximum output rows fetched into n8n. |
+| Field                    | Description                                                          |
+| ------------------------ | -------------------------------------------------------------------- |
+| `Actor ID`               | Defaults to `Newbs/reddit-comment-scraper`.                          |
+| `Reddit Post URLs`       | One or more full Reddit post URLs, separated by new lines or commas. |
+| `Maximum Comments`       | Limit per Reddit post.                                               |
+| `Include Nested Replies` | Keeps full conversation context when enabled.                        |
+| `Sort Comments By`       | `top`, `best`, `new`, `controversial`, `old`, or `qa`.               |
+| `Use Apify Proxy`        | Enables proxy settings passed to the Actor.                          |
+| `Dataset Item Limit`     | Maximum output rows fetched into n8n.                                |
 
 ## Operations
 
@@ -114,34 +113,34 @@ Use this for very large jobs or workflows that want to monitor the run later.
 
 The node returns one n8n item per Reddit comment. Typical fields include:
 
-| Field | Description |
-| --- | --- |
-| `postUrl` | Original Reddit post URL |
-| `postTitle` | Reddit post title |
-| `subreddit` | Subreddit name |
-| `commentAuthor` | Reddit comment author |
-| `commentText` | Full comment text |
-| `commentTimestamp` | Comment timestamp |
-| `commentDepth` | Nesting depth, where `0` is top-level |
-| `commentPath` | Thread path, for example `0/1` |
-| `parentPath` | Parent thread path |
-| `isTopLevel` | Whether this comment is top-level |
-| `replyCount` | Direct reply count |
-| `apifyRunId` | Apify Actor run ID |
-| `apifyDatasetId` | Apify dataset ID |
+| Field              | Description                           |
+| ------------------ | ------------------------------------- |
+| `postUrl`          | Original Reddit post URL              |
+| `postTitle`        | Reddit post title                     |
+| `subreddit`        | Subreddit name                        |
+| `commentAuthor`    | Reddit comment author                 |
+| `commentText`      | Full comment text                     |
+| `commentTimestamp` | Comment timestamp                     |
+| `commentDepth`     | Nesting depth, where `0` is top-level |
+| `commentPath`      | Thread path, for example `0/1`        |
+| `parentPath`       | Parent thread path                    |
+| `isTopLevel`       | Whether this comment is top-level     |
+| `replyCount`       | Direct reply count                    |
+| `apifyRunId`       | Apify Actor run ID                    |
+| `apifyDatasetId`   | Apify dataset ID                      |
 
 ## Workflow Starters
 
 Recommended workflows that use the official Apify node are included in [`examples/official-apify-workflows`](examples/official-apify-workflows):
 
-| Workflow | Purpose |
-| --- | --- |
-| `reddit-comments-clean-export.json` | Normalize comments for Sheets, CSV, Airtable, or databases. |
-| `reddit-pain-point-keywords.json` | Find comments with pain-point language for product research. |
-| `reddit-thread-metrics.json` | Aggregate reply ratio, max depth, and author counts by Reddit post. |
-| `reddit-ai-research-brief.json` | Build a compact AI-ready research brief from comments. |
-| `reddit-brand-monitor-slack.json` | Filter brand/competitor mentions and prepare Slack-ready alert text. |
-| `reddit-competitor-research-sheets.json` | Prepare Google Sheets-ready competitor research rows. |
+| Workflow                                 | Purpose                                                              |
+| ---------------------------------------- | -------------------------------------------------------------------- |
+| `reddit-comments-clean-export.json`      | Normalize comments for Sheets, CSV, Airtable, or databases.          |
+| `reddit-pain-point-keywords.json`        | Find comments with pain-point language for product research.         |
+| `reddit-thread-metrics.json`             | Aggregate reply ratio, max depth, and author counts by Reddit post.  |
+| `reddit-ai-research-brief.json`          | Build a compact AI-ready research brief from comments.               |
+| `reddit-brand-monitor-slack.json`        | Filter brand/competitor mentions and prepare Slack-ready alert text. |
+| `reddit-competitor-research-sheets.json` | Prepare Google Sheets-ready competitor research rows.                |
 
 These templates use `@apify/n8n-nodes-apify` and are the best option for n8n Cloud or verified-node workflows.
 
@@ -151,22 +150,22 @@ Promotion copy and posting drafts are included in [`docs/N8N_DISTRIBUTION_KIT.md
 
 This repository also includes distribution assets for non-n8n channels:
 
-| Folder | Purpose |
-| --- | --- |
-| [`examples/make`](examples/make) | Make.com scenario template specs for Sheets, Slack, Airtable, and AI briefs. |
-| [`examples/zapier`](examples/zapier) | Zapier template specs plus a Webhooks by Zapier direct Apify API fallback. |
-| [`examples/pipedream`](examples/pipedream) | Pipedream copy-paste components for Sheets-ready rows and Slack alerts. |
-| [`examples/ai-agents`](examples/ai-agents) | OpenAPI schema for GPT Actions and a local MCP server proof of concept. |
+| Folder                                     | Purpose                                                                      |
+| ------------------------------------------ | ---------------------------------------------------------------------------- |
+| [`examples/make`](examples/make)           | Make.com scenario template specs for Sheets, Slack, Airtable, and AI briefs. |
+| [`examples/zapier`](examples/zapier)       | Zapier template specs plus a Webhooks by Zapier direct Apify API fallback.   |
+| [`examples/pipedream`](examples/pipedream) | Pipedream copy-paste components for Sheets-ready rows and Slack alerts.      |
+| [`examples/ai-agents`](examples/ai-agents) | OpenAPI schema for GPT Actions and a local MCP server proof of concept.      |
 
 These assets call the Apify Actor. They do not include the private scraping implementation.
 
 Self-hosted shortcut examples for this package are included in [`examples/workflows`](examples/workflows):
 
-| Workflow | Purpose |
-| --- | --- |
-| `reddit-comments-clean-export.json` | Normalize comments for Sheets, CSV, Airtable, or databases. |
-| `reddit-pain-point-keywords.json` | Find comments with pain-point language for product research. |
-| `reddit-thread-metrics.json` | Aggregate reply ratio, max depth, and author counts by Reddit post. |
+| Workflow                            | Purpose                                                             |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| `reddit-comments-clean-export.json` | Normalize comments for Sheets, CSV, Airtable, or databases.         |
+| `reddit-pain-point-keywords.json`   | Find comments with pain-point language for product research.        |
+| `reddit-thread-metrics.json`        | Aggregate reply ratio, max depth, and author counts by Reddit post. |
 
 To use the self-hosted shortcut examples:
 

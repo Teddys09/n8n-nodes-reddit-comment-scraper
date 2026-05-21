@@ -6,7 +6,7 @@ Paste this section into the Actor description to make the n8n path clear for cus
 
 You can run this Actor from n8n with the official Apify node and send Reddit comments to Google Sheets, Slack, Notion, Airtable, HubSpot, or an AI workflow.
 
-![Reddit Comment Scraper n8n workflow](https://raw.githubusercontent.com/Teddys09/n8n-nodes-reddit-comment-scraper/main/docs/assets/reddit-n8n-apify-workflow.svg)
+![Reddit Comment Scraper n8n workflow](assets/reddit-n8n-apify-workflow.svg)
 
 ### What you can automate
 
@@ -63,11 +63,7 @@ Start with a low `maxComments` value for your first paid test run.
 
 Billing happens through this Apify Actor. n8n is only the automation layer.
 
-Public workflow JSON examples:
-
-```text
-https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
-```
+Public workflow JSON examples: [Newbs workflow examples](https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows)
 
 Suggested search phrases for customers:
 

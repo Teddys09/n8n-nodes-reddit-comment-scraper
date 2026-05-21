@@ -4,7 +4,7 @@ Use this when promoting the Reddit Comment Scraper workflows to n8n users.
 
 ## Main Links
 
-- Actor: https://apify.com/Newbs/reddit-comment-scraper
+- Actor: https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 - Official Apify n8n docs: https://docs.apify.com/platform/integrations/n8n
 - Workflow JSONs: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 - Optional self-hosted shortcut node: https://www.npmjs.com/package/n8n-nodes-reddit-comment-scraper
@@ -48,7 +48,7 @@ Free workflows: Reddit comments to Sheets, Slack alerts, pain-point research, an
 
 Body:
 
-```text
+````text
 I put together a small set of n8n workflows for Reddit research using the official Apify node.
 
 They run the Reddit Comment Scraper Actor, return one row per Reddit comment, and then format the results for common automation use cases:
@@ -66,7 +66,7 @@ Workflow JSONs:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
 Actor:
-https://apify.com/Newbs/reddit-comment-scraper
+https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 
 Setup:
 1. Enable or install the official Apify node in n8n.
@@ -80,41 +80,56 @@ Would be useful to hear which destination people want next: Slack, Sheets, Airta
 
 ## Reddit r/n8n Draft
 
+Use this only in the weekly self-promotion thread unless the moderators explicitly allow a standalone workflow post. r/n8n rules say workflow posts need a GitHub, GitHub Gist, or n8n.io/workflows link, and paid/promotional workflow content belongs in the weekly self-promotion thread.
+
 Title:
 
 ```text
-I made free n8n workflows for Reddit research using Apify
+I made n8n workflows for Reddit research using the official Apify node
 ```
 
 Body:
 
 ```text
-I made a few ready-to-import n8n workflows for Reddit comment research.
+I built a small set of ready-to-import n8n workflow JSONs for Reddit comment research using the official Apify node.
 
-They use the official Apify node to run a Reddit Comment Scraper Actor, then format the output for:
+Disclosure: the workflow JSONs are public on GitHub. Running the Reddit Comment Scraper Actor uses Apify credits / the Actor's Apify pricing.
 
-- Google Sheets/CSV export
+What the workflows do:
+
+- clean rows for Google Sheets/CSV/Airtable
 - pain-point keyword scoring
-- brand or competitor alerts for Slack
-- competitor research tables
+- brand/competitor mention alerts formatted for Slack
+- competitor research rows for Sheets
 - thread metrics
 - AI-ready research briefs
 
-GitHub:
+Workflow code:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
-Actor:
-https://apify.com/Newbs/reddit-comment-scraper
+Example output:
 
-Import steps:
+```json
+{
+  "subreddit": "AskReddit",
+  "postTitle": "What city would you never, ever, EVER live in?",
+  "commentAuthor": "example_user",
+  "commentText": "Example Reddit comment text",
+  "commentDepth": 0,
+  "isTopLevel": true,
+  "replyCount": 0
+}
+```
+
+Setup:
 1. Enable/install the official Apify node.
 2. Add an Apify credential.
 3. Import the workflow JSON.
 4. Replace the example Reddit URL.
-5. Start with a small maxComments value for testing.
+5. Start with maxComments 1-10 for the first test run.
 
 Feedback welcome, especially on which destination workflow would be most useful next.
-```
+````
 
 ## LinkedIn Draft
 
@@ -136,7 +151,7 @@ Workflow JSONs:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
 Actor:
-https://apify.com/Newbs/reddit-comment-scraper
+https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 ```
 
 ## X/Twitter Draft
@@ -167,7 +182,7 @@ Workflow JSONs:
 https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper/tree/main/examples/official-apify-workflows
 
 Actor:
-https://apify.com/Newbs/reddit-comment-scraper
+https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 ```
 
 ## First Follow-Up Comment
@@ -181,9 +196,9 @@ Small note: these workflows use the official Apify node in n8n. The custom packa
 Use source-specific links when posting so traffic can be compared in Apify analytics:
 
 ```text
-https://apify.com/Newbs/reddit-comment-scraper?utm_source=n8n-community&utm_medium=forum&utm_campaign=reddit-workflows
-https://apify.com/Newbs/reddit-comment-scraper?utm_source=reddit&utm_medium=social&utm_campaign=reddit-workflows
-https://apify.com/Newbs/reddit-comment-scraper?utm_source=linkedin&utm_medium=social&utm_campaign=reddit-workflows
+https://apify.com/Newbs/reddit-comment-scraper?utm_source=n8n-community&utm_medium=forum&utm_campaign=reddit-workflows&fpr=nmao3
+https://apify.com/Newbs/reddit-comment-scraper?utm_source=reddit&utm_medium=social&utm_campaign=reddit-workflows&fpr=nmao3
+https://apify.com/Newbs/reddit-comment-scraper?utm_source=linkedin&utm_medium=social&utm_campaign=reddit-workflows&fpr=nmao3
 ```
 
 ## Posting Rule

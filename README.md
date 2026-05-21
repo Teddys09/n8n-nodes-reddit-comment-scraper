@@ -26,7 +26,7 @@ This package is only a public n8n wrapper. It does not contain the Actor scrapin
 
 - n8n package: https://www.npmjs.com/package/n8n-nodes-reddit-comment-scraper
 - GitHub repository: https://github.com/Teddys09/n8n-nodes-reddit-comment-scraper
-- Apify Actor: https://apify.com/Newbs/reddit-comment-scraper
+- Apify Actor: https://apify.com/Newbs/reddit-comment-scraper?fpr=nmao3
 - Apify n8n docs: https://docs.apify.com/platform/integrations/n8n
 
 ## What It Does
